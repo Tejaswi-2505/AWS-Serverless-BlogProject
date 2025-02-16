@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Blog</title>
+</head>
+<body>
+    <h1>My Simple Blog</h1>
+    <textarea id="blogMessage" placeholder="Write your blog message..."></textarea><br>
+    <button onclick="postBlog()">Post</button>
+    <h2>Posted Messages:</h2>
+    <div id="blogPosts"></div>
+
+    <script>
+        const API_URL = "https://vlvtwk3rc2.execute-api.us-east-1.amazonaws.com/prod/blog"; // Replace with your API Gateway URL
+
+        async function postBlog() {
+            const message = document.getElementById("blogMessage").value;
+            if (!message) {
+                alert("Please write a message before posting.");
+                return;
+            }
+
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message })
+            });
+
+            if (response.ok) {
+                alert("Blog posted successfully!");
+                loadBlogs();
+            } else {
+                alert("Error posting blog.");
+            }
+        }
+
+        async function loadBlogs() {
+            const response = await fetch(API_URL, { method: "GET" });
+            const blogs = await response.json();
+            document.getElementById("blogPosts").innerHTML = blogs
+                .map(blog => `<p>${blog.message}</p>`)
+                .join("");
+        }
+
+        loadBlogs();
+    </script>
+</body>
+</html>
