@@ -46,6 +46,3 @@ cd aws-serverless-blog
 - Ensure IAM roles have correct permissions.
 - Check API Gateway logs if Lambda is not responding.
 - Verify S3 bucket policy allows public access (if needed).
-
-## License
-This project is open-source and available under the MIT License.
